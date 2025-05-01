@@ -7,30 +7,75 @@ MEGAN SHIRLEY
  */
 
 import java.util.Scanner;
+import java.math.*;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
+
+        boolean logged = false;
 
         Checkings checking = new Checkings("Savannah", 427852, 300.00, 50);
         checking.withdraw(100);
         checking.giveBalance();
 
         Credit credit = new Credit("Megan", 102, 0);
-        credit.giveBalance();
 
-        logInPage();
-        int response = sc.nextInt();
-        if(response == 1) {
-            System.out.println("Please Enter Your Username: ");
-            String username = sc.nextLine();
-            if (username.equalsIgnoreCase("user")) {
-                homePage();
+        while(logged == false) {
+            logInPage();
+            int response = sc.nextInt();
+            sc.nextLine();
+            if (response == 1) {
+                logInMethod();
+                String username = sc.nextLine();
+
+                if (username.equalsIgnoreCase("user")) {
+                    logged = true;
+                    System.out.println("Login successful");
+                } else {
+                    LoginRepeat();
+                    logInPage();
+                    response = sc.nextInt();
+                }
+            } else if (response == 2) {
+                newAccount();
+
             }
         }
 
 
 
+        while (logged != false) {
+            homePage();
+            int loopResponse = sc.nextInt();
+            if (loopResponse == 1) {
+                System.out.print("Enter amount to withraw: ");
+                double amt = sc.nextDouble();
+                checking.withdraw(amt);
+            }else if (loopResponse == 2){
+                System.out.print("Enter amount to deposit: ");
+                double amt = sc.nextDouble();
+                checking.deposit(amt);
+            }else if (loopResponse == 3){
+                System.out.println("Coming Soon");
+            }else if (loopResponse == 4){
+                System.out.println("Coming Soon");
+            }else if (loopResponse == 5) {
+                credit.giveBalance();
+            }else if (loopResponse == 0){
+                System.out.println("Logging out...");
+                logged = false;
+            }else {
+                System.out.println("Invalid Input");
+
+        }
+
+
+
+    }
+
+    public static void logInMethod() {
+        System.out.println("Please Enter Your Username: ");
     }
 
     public static void logInPage() {
@@ -48,7 +93,7 @@ public class Main {
         System.out.println("1: To make a Withdraw");
         System.out.println("2: To make a Deposit, Press 2");
         System.out.println("3: To Check/Pay off your Fees, Press 3");
-        System.out.println("4: To Check Out or Rewards Program, Press 4");
+        System.out.println("4: To Check Out our Rewards Program, Press 4");
         System.out.println("5: To Check your Credit");
 
         System.out.println("");
