@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
         boolean logged = false;
+        int response = 0;
 
         Checkings checking = new Checkings("Savannah", 427852, 300.00, 50);
         checking.withdraw(100);
@@ -23,13 +24,16 @@ public class Main {
 
         while(logged == false) {
             logInPage();
-            int response = sc.nextInt();
+            response = sc.nextInt();
             sc.nextLine();
             if (response == 1) {
                 logInMethod();
                 String username = sc.nextLine();
 
-                if (username.equalsIgnoreCase("user")) {
+                if (checking != null && username.equalsIgnoreCase(checking.getName())) {
+                    logged = true;
+                    System.out.println("Login Successful");
+                } else if (username.equalsIgnoreCase("user")) {
                     logged = true;
                     System.out.println("Login successful");
                 } else {
@@ -61,7 +65,26 @@ public class Main {
             }else if (loopResponse == 4){
                 System.out.println("Coming Soon");
             }else if (loopResponse == 5) {
-                credit.giveBalance();
+                credit.viewCreditStatus();
+                creditRepeat();
+                int x = sc.nextInt();
+                while(x != 0) {
+                    if(x == 1) {
+                        System.out.println("Enter Withdraw Amount: ");
+                        double y = sc.nextDouble();
+                        credit.withdraw(y);
+                    }else if(x == 2) {
+                        System.out.println("Enter Deposit Amount: ");
+                        double y = sc.nextDouble();
+                        credit.deposit(y);
+                    }else {
+                        System.out.println("Invalid Input");
+                    }
+                }
+            }else if (loopResponse == 6) {
+                savings.applyInterest();
+            }else if (loopResponse == 7) {
+                checking.giveBalance();
             }else if (loopResponse == 0){
                 System.out.println("Logging out...");
                 logged = false;
@@ -77,6 +100,12 @@ public class Main {
     public static void logInMethod() {
         System.out.println("Please Enter Your Username: ");
     }
+    public static void creditRepeat() {
+        System.out.println("Would you like to: ");
+        System.out.println("1: Withdraw");
+        System.out.println("2: Deposit");
+        System.out.println("0: Go Back");
+    }
 
     public static void logInPage() {
         System.out.println("MISA BANKING Greets you.");
@@ -90,11 +119,14 @@ public class Main {
         System.out.println("Welcome to MISA BANKING -- What would you like to do?");
         System.out.println("");
 
-        System.out.println("1: To make a Withdraw");
-        System.out.println("2: To make a Deposit, Press 2");
-        System.out.println("3: To Check/Pay off your Fees, Press 3");
-        System.out.println("4: To Check Out our Rewards Program, Press 4");
-        System.out.println("5: To Check your Credit");
+        System.out.println("1: Make a Withdrawal");
+        System.out.println("2: Make a Deposit");
+        System.out.println("3: Check/Pay off your Fees");
+        System.out.println("4: Check Out our Rewards Program");
+        System.out.println("5: Manage your Credit Account");
+        System.out.println("6: View your Savings Account");
+        System.out.println("7: View your Account Details");
+        System.out.println("0: Logout");
 
         System.out.println("");
         System.out.println("Enter your choice: ");
@@ -131,8 +163,27 @@ public class Main {
                 this.balance = balance;
             }
 
+            public void setName(String val){
+                name = val;
+            }
+            public void setId(int val){
+                id = val;
+            }
+            public void setBalance(double val){
+                balance = val;
+            }
+            public String getName() {
+                return name;
+            }
+            public int getId() {
+                return id;
+            }
+            public double getBalance() {
+                return balance;
+            }
+
             public double giveBalance() {
-                System.out.println(this.name + " ID: " + this.id + " Balance: $" + this.balance);
+                System.out.println("Name: " + this.name + " ID: " + this.id + " Balance: $" + this.balance);
                 return this.balance;
             }
 
